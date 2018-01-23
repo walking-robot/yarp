@@ -615,6 +615,11 @@ bool ControlBoardWrapper::openDeferredAttach(Property& prop)
         }
 
         totalJ+=axes;
+
+        if (isafectrl)
+        {
+            isafectrl->map(k, wBase, wTop, base, top);
+        }
     }
 
     if (totalJ!=controlledJoints)
@@ -622,6 +627,7 @@ bool ControlBoardWrapper::openDeferredAttach(Property& prop)
         yError() <<"Error total number of mapped joints ("<< totalJ <<") does not correspond to part joints (" << controlledJoints << ")";
         return false;
     }
+
     return true;
 }
 
