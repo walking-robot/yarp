@@ -585,7 +585,7 @@ public:
 
     }
 
-    void toFromBottle()
+    void toFromBottleTest()
     {
        {
             report(0,"Testing fromBottle(toBottle) XYZ_NORMAL_RGBA");
@@ -609,6 +609,7 @@ public:
             PointCloud<XYZ_NORMAL_RGBA_DATA> testPC2;
             Bottle bt = testPC.toBottle();
             testPC2.fromBottle(bt);
+            checkEqual(testPC.size(), testPC2.size(), "Checking size");
             checkEqual(testPC.width(), testPC2.width(),"Checking width");
             checkEqual(testPC.height(), testPC2.height(),"Checking height");
 
@@ -652,6 +653,7 @@ public:
              PointCloud<XYZ_NORMAL_DATA> testPC2;
              Bottle bt = testPC.toBottle();
              testPC2.fromBottle(bt);
+             checkEqual(testPC.size(), testPC2.size(), "Checking size");
              checkEqual(testPC.width(), testPC2.width(),"Checking width");
              checkEqual(testPC.height(), testPC2.height(),"Checking height");
 
@@ -688,6 +690,7 @@ public:
              PointCloud<XYZ_RGBA_DATA> testPC2;
              Bottle bt = testPC.toBottle();
              testPC2.fromBottle(bt);
+             checkEqual(testPC.size(), testPC2.size(), "Checking size");
              checkEqual(testPC.width(), testPC2.width(),"Checking width");
              checkEqual(testPC.height(), testPC2.height(),"Checking height");
 
@@ -720,6 +723,7 @@ public:
              PointCloud<XYZ_DATA> testPC2;
              Bottle bt = testPC.toBottle();
              testPC2.fromBottle(bt);
+             checkEqual(testPC.size(), testPC2.size(), "Checking size");
              checkEqual(testPC.width(), testPC2.width(),"Checking width");
              checkEqual(testPC.height(), testPC2.height(),"Checking height");
 
@@ -749,6 +753,7 @@ public:
              PointCloud<NORMAL_DATA> testPC2;
              Bottle bt = testPC.toBottle();
              testPC2.fromBottle(bt);
+             checkEqual(testPC.size(), testPC2.size(), "Checking size");
              checkEqual(testPC.width(), testPC2.width(),"Checking width");
              checkEqual(testPC.height(), testPC2.height(),"Checking height");
 
@@ -766,6 +771,236 @@ public:
 
     }
 
+    void setExternalTest()
+    {
+        {
+             report(0,"Testing setExternal() XYZ_NORMAL_RGBA");
+             PointCloud<XYZ_NORMAL_RGBA_DATA> testPC;
+             size_t width = 21; size_t height = 32;
+             testPC.resize(width, height);
+             for (size_t i=0; i<width*height; i++)
+             {
+                 testPC(i).x = i;
+                 testPC(i).y = i + 1;
+                 testPC(i).z = i + 2;
+                 testPC(i).normal_x = i*2;
+                 testPC(i).normal_y = i*3;
+                 testPC(i).normal_z = i*4;
+                 testPC(i).curvature =i*5;
+                 testPC(i).r = 'r';
+                 testPC(i).g = 'g';
+                 testPC(i).b = 'b';
+                 testPC(i).a = 'a';
+             }
+             PointCloud<XYZ_NORMAL_RGBA_DATA> testPC2;
+
+             testPC2.setExternal(testPC.getRawData(), testPC.width(), testPC.height());
+             checkEqual(testPC.size(), testPC2.size(), "Checking size");
+             checkEqual(testPC.width(), testPC2.width(),"Checking width");
+             checkEqual(testPC.height(), testPC2.height(),"Checking height");
+
+             bool ok = true;
+
+             for (size_t i=0; i<testPC2.size(); i++)
+             {
+                 ok &= testPC2(i).x == i;
+                 ok &= testPC2(i).y == i + 1;
+                 ok &= testPC2(i).z == i + 2;
+                 ok &= testPC2(i).normal_x == i*2;
+                 ok &= testPC2(i).normal_y == i*3;
+                 ok &= testPC2(i).normal_z == i*4;
+                 ok &= testPC2(i).curvature ==i*5;
+                 ok &= testPC2(i).r == 'r';
+                 ok &= testPC2(i).g == 'g';
+                 ok &= testPC2(i).b == 'b';
+                 ok &= testPC2(i).a == 'a';
+             }
+             checkTrue(ok,"Checking data consistency");
+         }
+
+         {
+              report(0,"Testing setExternal() XYZ_NORMAL");
+              PointCloud<XYZ_NORMAL_DATA> testPC;
+              size_t width = 21; size_t height = 32;
+              testPC.resize(width, height);
+              for (size_t i=0; i<width*height; i++)
+              {
+                  testPC(i).x = i;
+                  testPC(i).y = i + 1;
+                  testPC(i).z = i + 2;
+                  testPC(i).normal_x = i*2;
+                  testPC(i).normal_y = i*3;
+                  testPC(i).normal_z = i*4;
+                  testPC(i).curvature =i*5;
+              }
+              PointCloud<XYZ_NORMAL_DATA> testPC2;
+              testPC2.setExternal(testPC.getRawData(), testPC.width(), testPC.height());
+              checkEqual(testPC.size(), testPC2.size(), "Checking size");
+              checkEqual(testPC.width(), testPC2.width(),"Checking width");
+              checkEqual(testPC.height(), testPC2.height(),"Checking height");
+
+              bool ok = true;
+
+              for (size_t i=0; i<width*height; i++)
+              {
+                  ok &= testPC2(i).x == i;
+                  ok &= testPC2(i).y == i + 1;
+                  ok &= testPC2(i).z == i + 2;
+                  ok &= testPC2(i).normal_x == i*2;
+                  ok &= testPC2(i).normal_y == i*3;
+                  ok &= testPC2(i).normal_z == i*4;
+                  ok &= testPC2(i).curvature ==i*5;
+              }
+              checkTrue(ok,"Checking data consistency");
+          }
+
+         {
+              report(0,"Testing setExternal() XYZ_RGBA");
+              PointCloud<XYZ_RGBA_DATA> testPC;
+              size_t width = 21; size_t height = 32;
+              testPC.resize(width, height);
+              for (size_t i=0; i<width*height; i++)
+              {
+                  testPC(i).x = i;
+                  testPC(i).y = i + 1;
+                  testPC(i).z = i + 2;
+                  testPC(i).r = 'r';
+                  testPC(i).g = 'g';
+                  testPC(i).b = 'b';
+                  testPC(i).a = 'a';
+              }
+              PointCloud<XYZ_RGBA_DATA> testPC2;
+              testPC2.setExternal(testPC.getRawData(), testPC.width(), testPC.height());
+              checkEqual(testPC.size(), testPC2.size(), "Checking size");
+              checkEqual(testPC.width(), testPC2.width(),"Checking width");
+              checkEqual(testPC.height(), testPC2.height(),"Checking height");
+
+              bool ok = true;
+
+              for (size_t i=0; i<width*height; i++)
+              {
+                  ok &= testPC2(i).x == i;
+                  ok &= testPC2(i).y == i + 1;
+                  ok &= testPC2(i).z == i + 2;
+                  ok &= testPC2(i).r == 'r';
+                  ok &= testPC2(i).g == 'g';
+                  ok &= testPC2(i).b == 'b';
+                  ok &= testPC2(i).a == 'a';
+              }
+              checkTrue(ok,"Checking data consistency");
+          }
+
+         {
+              report(0,"Testing setExternal() XYZ");
+              PointCloud<XYZ_DATA> testPC;
+              size_t width = 21; size_t height = 32;
+              testPC.resize(width, height);
+              for (size_t i=0; i<width*height; i++)
+              {
+                  testPC(i).x = i;
+                  testPC(i).y = i + 1;
+                  testPC(i).z = i + 2;
+              }
+              PointCloud<XYZ_DATA> testPC2;
+              testPC2.setExternal(testPC.getRawData(), testPC.width(), testPC.height());
+              checkEqual(testPC.size(), testPC2.size(), "Checking size");
+              checkEqual(testPC.width(), testPC2.width(),"Checking width");
+              checkEqual(testPC.height(), testPC2.height(),"Checking height");
+
+              bool ok = true;
+
+              for (size_t i=0; i<width*height; i++)
+              {
+                  ok &= testPC2(i).x == i;
+                  ok &= testPC2(i).y == i + 1;
+                  ok &= testPC2(i).z == i + 2;
+              }
+              checkTrue(ok,"Checking data consistency");
+          }
+
+         {
+              report(0,"Testing setExternal() NORMAL");
+              PointCloud<NORMAL_DATA> testPC;
+              size_t width = 3; size_t height = 3;
+              testPC.resize(width, height);
+              for (size_t i=0; i<width*height; i++)
+              {
+                  testPC(i).normal_x = i*2;
+                  testPC(i).normal_y = i*3;
+                  testPC(i).normal_z = i*4;
+                  testPC(i).curvature =i*5;
+              }
+              PointCloud<NORMAL_DATA> testPC2;
+              testPC2.setExternal(testPC.getRawData(), testPC.width(), testPC.height());
+              checkEqual(testPC.size(), testPC2.size(), "Checking size");
+              checkEqual(testPC.width(), testPC2.width(),"Checking width");
+              checkEqual(testPC.height(), testPC2.height(),"Checking height");
+
+              bool ok = true;
+
+              for (size_t i=0; i<width*height; i++)
+              {
+                  ok &= testPC2(i).normal_x == i*2;
+                  ok &= testPC2(i).normal_y == i*3;
+                  ok &= testPC2(i).normal_z == i*4;
+                  ok &= testPC2(i).curvature ==i*5;
+              }
+              checkTrue(ok,"Checking data consistency");
+          }
+
+    }
+
+    void readWriteSetExternalTest()
+    {
+        Network::setLocalMode(true);
+        report(0,"Testing the case in which we receive a structure bigger than the one we expect(+setExternal)");
+        BufferedPort< PointCloud<XYZ_RGBA_DATA> > outPort;
+        Port inPort;
+        checkTrue(outPort.open("/test/pointcloud/out"),"Opening output port");
+        checkTrue(inPort.open("/test/pointcloud/in"),"Opening input port");
+        checkTrue(NetworkBase::connect(outPort.getName(), inPort.getName()),"Checking connection");
+        PointCloud<XYZ_RGBA_DATA>& testPC = outPort.prepare();
+        int width  = 200;
+        int height = 20;
+        VectorOf<XYZ_RGBA_DATA> vecData;
+        vecData.resize(width*height);
+
+        for (int i=0; i<width*height; i++)
+        {
+            vecData(i).x = i;
+            vecData(i).y = i + 1;
+            vecData(i).z = i + 2;
+            vecData(i).r = '1';
+            vecData(i).g = '2';
+            vecData(i).b = '3';
+            vecData(i).a = '4';
+        }
+
+        testPC.setExternal((char*) &vecData(0), width, height);
+
+        yarp::os::Time::delay(0.3);
+
+        outPort.write();
+
+        PointCloud<XYZ_DATA> inCloud;
+        inPort.read(inCloud);
+
+        checkFalse(inCloud.dataSizeBytes() == testPC.dataSizeBytes(), "Checking size, correctly different");
+
+        bool ok = true;
+        for (int i=0; i<width*height; i++)
+        {
+            ok &= inCloud(i).x == i;
+            ok &= inCloud(i).y == i + 1;
+            ok &= inCloud(i).z == i + 2;
+        }
+
+        checkTrue(ok, "Checking data validity");
+
+        outPort.close();
+        inPort.close();
+    }
+
     virtual void runTests() override
     {
         readWriteMatchTest();
@@ -774,7 +1009,9 @@ public:
         copyAndAssignmentTest();
         fromExternalTest();
         concatenationTest();
-        toFromBottle();
+        toFromBottleTest();
+        setExternalTest();
+        readWriteSetExternalTest();
     }
 };
 
