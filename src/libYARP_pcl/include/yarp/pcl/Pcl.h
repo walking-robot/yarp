@@ -43,7 +43,7 @@ template< class T1, class T2 >
 inline bool fromPCL(::pcl::PointCloud< T1 > &pclCloud, yarp::sig::PointCloud< T2 > &yarpCloud)
 {
     yAssert(sizeof(T1) == sizeof(T2));
-    yarpCloud.fromExternalPC((char*) &pclCloud(0,0), yarpCloud.getPointType(), pclCloud.width, pclCloud.height, pclCloud.is_dense);
+    yarpCloud.setExternal((char*) &pclCloud(0,0), pclCloud.width, pclCloud.height);
     return true;
 }
 
@@ -74,7 +74,7 @@ inline int loadPCD(const std::string &file_name, yarp::sig::PointCloud<T2> &yarp
     yAssert(sizeof(T1) == sizeof(T2));
     ::pcl::PointCloud<T1> pclCloud;
     int ret = ::pcl::io::loadPCDFile(file_name, pclCloud);
-    yarp::pcl::fromPCL< T1, T2 >(pclCloud, yarpCloud);
+    yarpCloud.fromExternalPC((char*) &pclCloud(0,0), yarpCloud.getPointType(), pclCloud.width, pclCloud.height, pclCloud.is_dense);
     return ret;
 }
 
