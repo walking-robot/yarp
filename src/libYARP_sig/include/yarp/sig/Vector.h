@@ -280,6 +280,25 @@ public:
     {
         return yarp::os::ConstString("");
     }
+
+    /**
+     * @brief Use this to wrap an external vector.
+     * Note that yarp Vector created DOESN'T own the memory
+     * assigned.
+     * @param extData, pointer to the external data.
+     * @param len, num of elements of the external vector
+     */
+    void setExternal (const char* extData, size_t len)
+    {
+        if (!extData)
+        {
+            return;
+        }
+        clear();
+        bytes.setExternal(extData, len * sizeof(T));
+        _updatePointers();
+
+    }
 };
 
 
@@ -495,6 +514,15 @@ public:
     virtual yarp::os::Type getType() override {
         return yarp::os::Type::byName("yarp/vector");
     }
+
+    /**
+     * @brief Use this to wrap an external vector.
+     * Note that yarp Vector created DOESN'T own the memory
+     * assigned.
+     * @param extData, pointer to the external data.
+     * @param len, num of elements of the external vector
+     */
+    void setExternal(const char* extData, size_t len);
 };
 
 #endif // YARP_SIG_VECTOR_H

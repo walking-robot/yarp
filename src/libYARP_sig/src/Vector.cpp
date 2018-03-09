@@ -228,3 +228,8 @@ bool Vector::write(yarp::os::ConnectionWriter& connection) {
 
     return !connection.isError();
 }
+
+void Vector::setExternal(const char* extData, size_t len)
+{
+    storage.setExternal(extData, len);
+}
