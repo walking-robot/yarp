@@ -129,7 +129,7 @@ that can be used as follow
     yarp::pcl::toPCL<yarp::sig::XYZ_RGBA_DATA, pcl::PointXYZRGBA>(yarpCloud, cloud2);
 \endcode
 
-Note that these conversions (PCL -> YARP, YARP -> PCL) are made through a **copy**.
+Note that the conversion `YARP -> PCL` is made through a **copy**. `PCL -> YARP` is a **zero-copy** conversion.
 
 \section yarp_pcd Saving/Loading PCDs
 
@@ -148,6 +148,17 @@ The `YARP_pcl` library has also methods to save/load yarp point clouds to PCD fi
     result = yarp::pcl::loadPCD< pcl::PointXYZRGBA, yarp::sig::XYZ_RGBA_DATA >(filename, cloud2);
 \endcode
 
-Note that these functions implicitly convert to and from PCL types.
+In both `yarp::pcl::savePCD` and `yarp::pcl::loadPCD` the conversion between pcl and yarp types is made through a **copy**.
+
+The most efficient way to initialize a yarp::sig::PointCloud through PCD files is to use `setExternal`:
+\code {.cpp}
+    // read the PCD file using PCL
+    pcl::PointCloud<pcl::PointXYZRGBA> pclCloud;
+    int ret = pcl::io::loadPCDFile(file_name, pclCloud);
+
+    // wrap the data of the pcl point cloud
+    yarp::sig::PointCloud<yarp::sig::XYZ_RGBA_DATA> yarpCloud;
+    yarpCloud.setExternal((char*) &pclCloud(0,0), pclCloud.width, pclCloud.height);
+\endcode
 
 */
