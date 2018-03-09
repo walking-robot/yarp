@@ -195,6 +195,7 @@ public:
     void checkSendReceiveInt()
     {
         report(0, "check VectorO<int> send receive");
+        Network::setLocalMode(true);
 
         Port portIn;
         Port portOut;
@@ -260,10 +261,82 @@ public:
         checkTrue(success, "VectorOf<int> was received correctly in a Bottle");
     }
 
+    void testExternal() {
+        {
+            report(0, "Testing setExternal VectorOf<int>");
+            VectorOf<int> vector;
+            vector.resize(100);
+            for (unsigned int k = 0; k < vector.size(); k++)
+            {
+                vector[k] = k;
+            }
+
+            VectorOf<int> vector2;
+            vector2.setExternal(vector.getMemoryBlock(), vector.size());
+
+            checkEqual(vector.size(), vector2.size(), "checking vector size");
+
+            bool ok = true;
+            for (unsigned int k = 0; k < vector2.size(); k++)
+            {
+                ok &= vector2[k] == k;
+            }
+
+            checkTrue(ok, "Checking data consistency");
+        }
+
+        {
+            report(0, "Testing setExternal VectorOf<double>");
+            VectorOf<double> vector;
+            vector.resize(100);
+            for (unsigned int k = 0; k < vector.size(); k++)
+            {
+                vector[k] = k;
+            }
+
+            VectorOf<double> vector2;
+            vector2.setExternal(vector.getMemoryBlock(), vector.size());
+
+            checkEqual(vector.size(), vector2.size(), "checking vector size");
+
+            bool ok = true;
+            for (unsigned int k = 0; k < vector2.size(); k++)
+            {
+                ok &= vector2[k] == k;
+            }
+
+            checkTrue(ok, "Checking data consistency");
+        }
+
+        {
+            report(0, "Testing setExternal VectorOf<float>");
+            VectorOf<float> vector;
+            vector.resize(100);
+            for (unsigned int k = 0; k < vector.size(); k++)
+            {
+                vector[k] = k;
+            }
+
+            VectorOf<float> vector2;
+            vector2.setExternal(vector.getMemoryBlock(), vector.size());
+
+            checkEqual(vector.size(), vector2.size(), "checking vector size");
+
+            bool ok = true;
+            for (unsigned int k = 0; k < vector2.size(); k++)
+            {
+                ok &= vector2[k] == k;
+            }
+
+            checkTrue(ok, "Checking data consistency");
+        }
+
+    }
 
     virtual void runTests() override {
         Network::setLocalMode(true);
         checkSendReceiveInt();
+        testExternal();
         Network::setLocalMode(false);
     }
 };
