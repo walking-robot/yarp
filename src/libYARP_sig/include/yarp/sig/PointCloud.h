@@ -495,6 +495,27 @@ namespace yarp {
             return BottleTagMap <T>();
         }
 
+        /**
+         * @brief Use this to wrap an external point cloud without
+         * copying data. Make sure that the the yarp point cloud type
+         * is compatible with the type of the external point cloud.
+         * Note that the yarp PointCloud created DOESN'T own the memory.
+         * @param extData, pointer to the external data.
+         * @param _width, width of the external point cloud
+         * @param _height, height of the external point cloud
+         */
+        void setExternal(const char* extData, size_t _width, size_t _height)
+        {
+            if (!extData)
+            {
+                return;
+            }
+            header.width  = _width;
+            header.height = _height;
+            data.setExternal(extData, _width * _height);
+
+        }
+
      private:
         yarp::sig::VectorOf<T> data;
         T nulldata;
