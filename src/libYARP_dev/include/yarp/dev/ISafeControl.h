@@ -23,24 +23,22 @@ namespace yarp
 class YARP_dev_API ISafeControl
 {
 public:
+    ISafeControl(){};
+    virtual ~ISafeControl(){};
+    
     /**
      * Check next configuration
-     * @param p joint configuration
+     * @param position joint configuration
      * @return true/false.
      */
-    virtual bool checkPosition(int part, double *p) = 0;
-    virtual bool checkPosition(int part, int njoints, int *joints, double *p) = 0;
+    virtual bool checkPosition(double *position, int *jointMap, int nJoints) = 0;
 
     /**
      * Check velocity at present configuration
-     * @param v joint velocity
+     * @param velocity joint velocity
      * @return true/false.
      */
-    virtual bool checkVelocity(int part, double *v) = 0;
-    virtual bool checkVelocity(int part, int njoints, int *joints, double *v) = 0;
-
-    virtual void map(int part, int wBase, int wTop, int base, int top) = 0;
-    virtual int bind() = 0;
+    virtual bool checkVelocity(double *velocity, int *jointMap, int nJoints) = 0;
 };
 
     }

@@ -31,6 +31,7 @@
 #include <yarp/dev/IHapticDevice.h>
 #include <yarp/dev/IRangefinder2D.h>
 #include <yarp/dev/IRGBDSensor.h>
+#include <yarp/dev/ISafeControl.h>
 #include <yarp/dev/IVisualServoing.h>
 #include <yarp/dev/PolyDriver.h>
 #include <yarp/dev/ServiceInterfaces.h>
